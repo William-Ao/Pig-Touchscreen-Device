@@ -66,15 +66,33 @@ def stage1():
     correct = random.choice(imglist)
     # Initial cue image presented and waits for response
     # when response is recieved, move on to stage2
-    sample_btn1 = tk.Button(gui, image=correct, command=stage2())
+    sample_btn1 = tk.Button(gui, image=correct, command=stage2)
     sample_btn1.place(relheight=0.4, rely=0.3, relwidth=0.3, relx=0.65, anchor="ne")
 
 
 def stage2():
-    print('bunted')
+    print('bingu')
 
 
 if __name__ == '__main__':
+    #function definitions
+    #-------------------
+    # local variation of the press function to handle pushes of the start and stop button in the main menu
+    # upon push of start, call this function to remove the start and quit buttons
+    def main_menu_destroy():
+        start_button.destroy()
+        quit_button.destroy()
+
+    def press(btn):
+        if btn == "START":
+            stage1()
+            print(start_button)
+            main_menu_destroy()
+        else:
+            gui.destroy()
+            sys.exit()
+    #-----------------------
+
     # GUI Initialization
     gui = tk.Tk()
     gui.state('zoomed')
@@ -93,35 +111,17 @@ if __name__ == '__main__':
         # converts the image into a compatible tkinter image
         imglist.append(ImageTk.PhotoImage(imgtemp))
 
-    # local variation of the press function to handle pushes of the start and stop button in the main menu
-
-    def press(btn):
-        if btn == "START":
-            stage1()
-            main_menu_destroy()
-        else:
-            gui.destroy()
-            sys.exit()
-
-    def main_menu_destroy():
-        start_button.destroy()
-        quit_button.destroy()
-
-    # upon push of start, call this function to remove the start and quit buttons
 
     # THESE ARE GLOBAL SO THE press(btn) FUNCTION IS ABLE TO HANDLE BUTTON PRESSES
     # this press(btn) function is specific to this segment of code because it is only handling
     # main menu inputs
     global start_button, quit_button
     # creates and places a button with the text START which begins stage1()
-    start_button = tk.Button(gui, text="START", font=("bold", "40"), command=partial(press, "START")) \
-        .place(relheight=0.5, relwidth=0.5, relx=1, rely=0, anchor="ne")
+    start_button = tk.Button(gui, text="START", font=("bold", "40"), command=partial(press, "START"))
+    start_button.place(relheight=0.5, relwidth=0.5, relx=1, rely=0, anchor="ne")
 
     # creates and places a button with the text QUIT which destroys the gui and exits the program
-    quit_button = tk.Button(gui, text="QUIT", font=("bold", "40"), command=partial(press, "QUIT")) \
-        .place(relheight=.15, relwidth=.1, relx=1, rely=.85, anchor="ne")
-
-
-
+    quit_button = tk.Button(gui, text="QUIT", font=("bold", "40"), command=partial(press, "QUIT"))
+    quit_button.place(relheight=.15, relwidth=.1, relx=1, rely=.85, anchor="ne")
 
     gui.mainloop()
